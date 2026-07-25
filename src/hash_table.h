@@ -16,5 +16,7 @@ typedef struct HashTable {
 unsigned int hash(const char* key);
 void init_table(HashTable* table);
 void set(HashTable* table, const char* key, const char* value);
+const char* get(const HashTable* table, const char* key);
+int delete_key(HashTable* table, const char* key);
 
 #endif

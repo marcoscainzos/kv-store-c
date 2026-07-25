@@ -46,3 +46,49 @@ void set(HashTable* table, const char* key, const char* value) {
 
     table->slots[index] = new_node; // insertar al inicio de la lista
 }
+
+const char* get(const HashTable* table, const char* key) {
+    unsigned int index = hash(key);
+
+    Node* current = table->slots[index];
+
+    while (current != NULL) {
+        if (strcmp(current->key, key) == 0) {
+            return current->value;
+        }
+
+        current = current->next;
+    }
+
+    return NULL;
+}
+
+int delete_key(HashTable* table, const char* key) {
+    unsigned int index = hash(key);
+
+    Node* current = table->slots[index];
+    Node* previous = NULL;
+
+    while (current != NULL) {
+        if (strcmp(current->key, key) == 0) {
+            if (previous == NULL) {
+                // Es el primer nodo del slot
+                table->slots[index] = current->next;
+            } else {
+                // Hay un nodo anterior
+                previous->next = current->next;
+            }
+
+            free(current->key);
+            free(current->value);
+            free(current);
+
+            return 1;
+        }
+
+        previous = current;
+        current = current->next;
+    }
+
+    return 0;
+}
